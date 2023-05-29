@@ -1,0 +1,8 @@
+dist
+*.d.ts
+build
+storybook-static
+
+jest.config.ts
+package.json
+.storybook

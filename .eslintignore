@@ -1,0 +1,13 @@
+dist
+build
+storybook-static
+*.d.ts
+
+.eslintrc.js
+.prettierrc.js
+.huskyrc.js
+.lintstagedrc.js 
+
+jest.config.ts
+jest.config.base.ts
+next.config.js 
