@@ -17,10 +17,11 @@
         "paths": {
             "@hooks/*": ["./src/hooks/*"],
             "@constants": ["./src/constants.ts"],
+            "@components/*": ["./src/components/*"],
             "@lib/*": ["./src/lib/*"]
         }
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/middleware.js"],
     "exclude": ["node_modules"],
     "settings": {
         "import/resolver": {

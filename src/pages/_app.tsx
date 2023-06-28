@@ -1,10 +1,23 @@
 import { MantineProvider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import NextAdapterPages from 'next-query-params/pages';
+import { QueryParamProvider } from 'use-query-params';
 
 import { fontMontserrat } from '@constants';
 
-const App = ({ Component, pageProps }: AppProps) => (
+import { SessionProvider } from '../components/auth/session-provider';
+import { ProtectedPage } from '../components/layout/protected-page';
+import { RouterTransition } from '../components/layout/router-transition';
+
+type AppPropsWithAuth = AppProps & {
+    Component: {
+        requireAuth?: boolean;
+    };
+};
+
+const App = ({ Component, pageProps: { session, ...pageProps } }: AppPropsWithAuth) => (
     <>
         <Head>
             <meta charSet="UTF-8" />
@@ -21,37 +34,50 @@ const App = ({ Component, pageProps }: AppProps) => (
             <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <MantineProvider
-            withGlobalStyles
-            withNormalizeCSS
-            theme={{
-                colorScheme: 'dark',
-                fontFamily: fontMontserrat.style.fontFamily,
-                breakpoints: {
-                    xs: '30em',
-                    sm: '48em',
-                    md: '60em',
-                    lg: '75em',
-                    xl: '90em'
-                },
-                primaryColor: 'orange',
+        <SessionProvider session={session}>
+            <QueryParamProvider adapter={NextAdapterPages}>
+                <MantineProvider
+                    withGlobalStyles
+                    withNormalizeCSS
+                    theme={{
+                        colorScheme: 'dark',
+                        fontFamily: fontMontserrat.style.fontFamily,
+                        breakpoints: {
+                            xs: '30em',
+                            sm: '48em',
+                            md: '60em',
+                            lg: '75em',
+                            xl: '90em'
+                        },
 
-                globalStyles: (theme) => ({
-                    '*, *::before, *::after': {
-                        boxSizing: 'border-box'
-                    },
+                        globalStyles: (theme) => ({
+                            '*, *::before, *::after': {
+                                boxSizing: 'border-box'
+                            },
 
-                    body: {
-                        ...theme.fn.fontStyles(),
-                        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-                        color: theme.colorScheme === 'dark' ? theme.colors.gray[0] : theme.black,
-                        lineHeight: theme.lineHeight
-                    }
-                })
-            }}
-        >
-            <Component {...pageProps} />
-        </MantineProvider>
+                            body: {
+                                ...theme.fn.fontStyles(),
+                                // TODO add to theme
+                                backgroundColor:
+                                    theme.colorScheme === 'dark' ? 'rgb(27, 37, 59)' : theme.colors.gray[0],
+                                color: theme.colorScheme === 'dark' ? theme.colors.gray[0] : theme.black,
+                                lineHeight: theme.lineHeight
+                            }
+                        })
+                    }}
+                >
+                    <Notifications />
+                    <RouterTransition />
+                    {Component.requireAuth === false ? (
+                        <Component {...pageProps} />
+                    ) : (
+                        <ProtectedPage>
+                            <Component {...pageProps} />
+                        </ProtectedPage>
+                    )}
+                </MantineProvider>
+            </QueryParamProvider>
+        </SessionProvider>
     </>
 );
 
