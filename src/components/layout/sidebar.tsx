@@ -132,7 +132,7 @@ export const Sidebar = () => {
     }));
 
     const { classes } = useStyles();
-    const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
+    const links = mockdata.map((item) => <LinksGroup collapsedMode={collapsed} {...item} key={item.label} />);
 
     const resize = useCallback(
         (mouseMoveEvent: any) => {

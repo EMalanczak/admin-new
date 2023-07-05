@@ -86,7 +86,9 @@ const AddGame = () => {
             description: values.description,
             currentVersionIos: values.currentVersionIos,
             currentVersionAndroid: values.currentVersionAndroid,
+            // @ts-ignore
             statusId: Boolean(values.statusId === 'true'),
+            // @ts-ignore
             landscape: Boolean(values.landscape === 'true'),
             defaultTournamentImage: imageURI
         };
