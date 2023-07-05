@@ -120,13 +120,18 @@ const COLUMN_LABELS: Record<
     }
 };
 
-export function useGamesList(queryParams: {
-    PageNumber?: number;
-    PageSize?: number;
-    search?: string;
-    active?: boolean;
-    orderBy?: string;
-}) {
+export function useGamesList(
+    queryParams: {
+        PageNumber?: number;
+        PageSize?: number;
+        search?: string;
+        active?: boolean;
+        orderBy?: string;
+    },
+    config: {
+        keepPreviousData?: boolean;
+    } = {}
+) {
     const stringParams = Object.entries(queryParams)
         .filter(([, value]) => value !== '')
         .map(([key, value]) => `${key}=${value}`)
@@ -136,7 +141,7 @@ export function useGamesList(queryParams: {
         `${API_URL}/api/AppGames/SearchAllGames?${stringParams}`,
         async (url: string) => api.get<AppGameListPagedResponse>(url).then((res) => res.data),
         {
-            keepPreviousData: true
+            keepPreviousData: config?.keepPreviousData ?? true
         }
     );
 

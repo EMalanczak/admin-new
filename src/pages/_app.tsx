@@ -1,4 +1,5 @@
 import { MantineProvider } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -61,20 +62,23 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppPropsWithAu
                                 backgroundColor:
                                     theme.colorScheme === 'dark' ? 'rgb(27, 37, 59)' : theme.colors.gray[0],
                                 color: theme.colorScheme === 'dark' ? theme.colors.gray[0] : theme.black,
-                                lineHeight: theme.lineHeight
+                                lineHeight: theme.lineHeight,
+                                overflow: 'hidden'
                             }
                         })
                     }}
                 >
-                    <Notifications />
-                    <RouterTransition />
-                    {Component.requireAuth === false ? (
-                        <Component {...pageProps} />
-                    ) : (
-                        <ProtectedPage>
+                    <ModalsProvider>
+                        <Notifications />
+                        <RouterTransition />
+                        {Component.requireAuth === false ? (
                             <Component {...pageProps} />
-                        </ProtectedPage>
-                    )}
+                        ) : (
+                            <ProtectedPage>
+                                <Component {...pageProps} />
+                            </ProtectedPage>
+                        )}
+                    </ModalsProvider>
                 </MantineProvider>
             </QueryParamProvider>
         </SessionProvider>

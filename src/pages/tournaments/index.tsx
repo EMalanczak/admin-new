@@ -381,7 +381,7 @@ const TournamentsPage = () => {
                                 <IconArrowRight size="1.1rem" stroke={1.5} />
                             </ActionIcon>
                         }
-                        placeholder="Search questions"
+                        placeholder="Search tournaments"
                         rightSectionWidth={36}
                         onChange={onSearchChange}
                     />

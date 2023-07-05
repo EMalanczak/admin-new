@@ -3,8 +3,10 @@ import { getSession, signOut } from 'next-auth/react';
 
 export const APP_GAME_UID = '90bd85cd-2035-43c0-a090-d5e9e372ece8';
 
+export const API_URL = 'https://megafans-admin-api-dev.azurewebsites.net';
+
 const api = axios.create({
-    baseURL: `${process.env.NEXT_PUBLIC_API_URL}/`,
+    baseURL: `${API_URL}/api`,
     timeout: 180000,
     headers: {
         'Content-Type': 'application/json'
@@ -66,4 +68,3 @@ api.interceptors.response.use(
 );
 
 export { api };
-export const API_URL = 'https://megafans-admin-api-dev.azurewebsites.net';
