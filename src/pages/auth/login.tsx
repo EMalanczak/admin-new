@@ -9,8 +9,8 @@ import { useState } from 'react';
 import logo from '../../../public/images/logo-white.png';
 
 const Login = () => {
-    const [email, setEmail] = useState('emil.malanczak@inspeerity.com');
-    const [password, setPassword] = useState('@s3%x5SVwQm$n8vL');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
@@ -19,8 +19,8 @@ const Login = () => {
 
         // https://stackoverflow.com/questions/70165993/how-to-handle-login-failed-error-in-nextauth-js
         const { ok, error }: any = await signIn('credentials', {
-            email: 'emil.malanczak@inspeerity.com',
-            password: '@s3%x5SVwQm$n8vL',
+            email,
+            password,
             callbackUrl: '/',
             redirect: false
         });
