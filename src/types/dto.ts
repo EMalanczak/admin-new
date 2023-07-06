@@ -4,8 +4,8 @@ export type TournamentDto = {
     tournamentImage: string;
     payout: number;
     cashTournament: boolean;
-    startDate: Date;
-    endDate: Date;
+    startDate: string;
+    endDate: string;
     gapBetweenTournament: number;
     entryFee: number;
     active: boolean;
