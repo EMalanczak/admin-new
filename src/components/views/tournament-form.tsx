@@ -30,6 +30,7 @@ import { DateTimePicker, DateTimePickerProps } from '@mantine/dates';
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { closeModal, modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
+import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDebounce } from 'use-debounce';
@@ -202,14 +203,21 @@ const schemaKeyValidators = [
 ];
 const STEPS_COUNT = schemaKeyValidators.length;
 
+const changeDateTimezoneToUtc = (date: Date) => {
+    const offset = date.getTimezoneOffset() * -1;
+    const utcDate = dayjs(date).add(offset, 'minute').toDate();
+
+    return utcDate.toISOString();
+};
+
 const tournamentToDto = (tournament: Yup.InferType<typeof schema4>): TournamentDto => ({
     appGameId: tournament.games[0],
     tournamentName: tournament.name,
     tournamentImage: tournament.image ?? '',
     payout: tournament.payoutAmount ?? 0,
     cashTournament: tournament.payoutType === '1',
-    startDate: tournament.startDate.toISOString(),
-    endDate: tournament.endDate.toISOString(),
+    startDate: changeDateTimezoneToUtc(tournament.startDate),
+    endDate: changeDateTimezoneToUtc(tournament.endDate),
     gapBetweenTournament: tournament.gap ?? 0,
     entryFee: tournament.fee,
     active: true,
