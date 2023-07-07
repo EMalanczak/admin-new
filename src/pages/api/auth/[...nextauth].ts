@@ -30,18 +30,18 @@ type ApiResponse<T> = {
 function getTokenExpiryDate(token: string) {
     const expiry = JSON.parse(atob(token.split('.')[1])).exp;
 
-    return expiry;
+    return expiry * 1000;
 }
 
 function isTokenExpired(token: any) {
-    return Math.floor(new Date().getTime() / 1000) >= getTokenExpiryDate(token);
+    return Math.floor(new Date().getTime()) >= getTokenExpiryDate(token);
 }
 
 async function refreshAccessToken(tokenObject: JWT) {
     try {
         const { data } = await api.post<ApiResponse<RefreshDataModel>>(
             `${API_URL}/Authorization/refresh`,
-            JSON.stringify({ refreshToken: tokenObject.refreshToken, token: tokenObject.token }),
+            { refresh: tokenObject.refreshToken, token: tokenObject.token },
             {
                 headers: {
                     'Content-Type': 'application/json'
@@ -104,7 +104,6 @@ export const nextAuthOptions: AuthOptions = {
                     if (!success) {
                         return null;
                     }
-                    console.log({ user });
 
                     if (user) {
                         // Any object returned will be saved in `user` property of the JWT
@@ -121,7 +120,6 @@ export const nextAuthOptions: AuthOptions = {
                 } catch (error) {
                     // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
                     console.log(error);
-                    console.log(`${API_URL}/Authorization/login`);
                     return null;
                 }
             }
